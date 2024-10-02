@@ -1,11 +1,10 @@
-import sharp from "sharp";
 import { sendFile } from "./services/s3-service";
 import dayjs from 'dayjs'
 
 export const handler = async (event: any) => {
-  try {
 
-    const image = Buffer.from(event.body, "base64");
+  try {
+    const image = Buffer.from(event.content, "base64");
     const keyFileName = `image-${Date.now()}-${dayjs().format("YYYYMMDD")}.jpg`
 
     const resultFile = await sendFile(keyFileName, image)
@@ -22,7 +21,6 @@ export const handler = async (event: any) => {
         eTagFile: sanitazeString(etag)
       },
     };
-
   } catch (err) {
     console.log(err)
     return {

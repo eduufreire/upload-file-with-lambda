@@ -1,1 +1,1 @@
-{"root":["../server.ts","../src/handler.ts","../src/services/s3-service.ts"],"version":"5.6.2"}
+{"root":["../src/handler.ts","../src/services/image-service.ts","../src/services/s3-service.ts"],"version":"5.6.2"}

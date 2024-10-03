@@ -1,7 +1,10 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import pino from "pino";
+import { S3Client, PutObjectCommand, PutObjectCommandOutput } from "@aws-sdk/client-s3";
+import { logger } from "../utils/globals";
 
-export const sendFile = async (keyName: string, image: Buffer) => {
+export async function sendFile(
+  keyName: string,
+  image: Buffer
+): Promise<PutObjectCommandOutput | undefined> {
   try {
     const client = new S3Client({ region: "us-east-1" });
 
@@ -11,12 +14,19 @@ export const sendFile = async (keyName: string, image: Buffer) => {
       Key: keyName,
     };
 
+    logger.info({name: "s3Service", content: {
+      bucket: input.Bucket,
+      keyFile: input.Key
+    }})
+
     const command = new PutObjectCommand(input);
     const result = await client.send(command);
     if (result) {
       return result;
     }
   } catch (err) {
-    throw new Error("Erro ao tentar enviar imagem ao S3");
+    const error = err as Error
+    logger.error({name: "s3Service", error: error.message})
+    throw new Error('Erro ao enviar imagem ao S3')
   }
-};
+}

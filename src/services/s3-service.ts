@@ -10,7 +10,7 @@ export async function sendFile(
 
     const input = {
       Body: image,
-      Bucket: "s3-02231002",
+      Bucket: "bucket-caixadesapato",
       Key: keyName,
     };
 
